@@ -11,15 +11,25 @@ values."
    ;; `+distribution'. For now available distributions are `spacemacs-base'
    ;; or `spacemacs'. (default 'spacemacs)
    dotspacemacs-distribution 'spacemacs
-   ;; List of additional paths where to look for configuration layers.
-   ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
    dotspacemacs-configuration-layer-path '("~/.spacemacs.d/private")
+   ;; Lazy installation of layers (i.e. layers are installed only when a file
+   ;; with a supported type is opened). Possible values are `all', `unused'
+   ;; and `nil'. `unused' will lazy install only unused layers (i.e. layers
+   ;; not listed in variable `dotspacemacs-configuration-layers'), `all' will
+   ;; lazy install any layer that support lazy installation even the layers
+   ;; listed in `dotspacemacs-configuration-layers'. `nil' disable the lazy
+   ;; installation feature and you have to explicitly list a layer in the
+   ;; variable `dotspacemacs-configuration-layers' to install it.
+   ;; (default 'unused)
+   dotspacemacs-enable-lazy-installation 'unused
+   dotspacemacs-ask-for-lazy-installation t
    ;; List of configuration layers to load. If it is the symbol `all' instead
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
    '(
+     sql
      ;; spacemacs-helm
-     spacemacs-ivy
+     ivy
      better-defaults
      osx
      colors
@@ -62,16 +72,18 @@ values."
      react
      elixir
      erlang
-     java
+     ;; java
      c-c++
      )
    dotspacemacs-additional-packages
    '(
-     helm-flx
-     helm-fuzzier
+     flx
+     ;; helm-flx
+     ;; helm-fuzzier
      minitest
      dumb-jump
      org-projectile
+     counsel-projectile
     )
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '(org-repo-todo)
@@ -93,19 +105,13 @@ values."
                                        hybrid-mode-enable-evilified-state t
                                        hybrid-mode-enable-hjkl-bindings t
                                        hybrid-mode-default-state 'normal)
+   dotspacemacs-elpa-https t
+   dotspacemacs-elpa-timeout 5
    ;; If non nil output loading progress in `*Messages*' buffer. (default nil)
    dotspacemacs-verbose-loading nil
-   ;; Specify the startup banner. Default value is `official', it displays
-   ;; the official spacemacs logo. An integer value is the index of text
-   ;; banner, `random' chooses a random text banner in `core/banners'
-   ;; directory. A string value must be a path to an image format supported
-   ;; by your Emacs build.
-   ;; If the value is nil then no banner is displayed. (default 'official)
+   ;; `official', `random' chooses a random text banner in `core/banners'
    dotspacemacs-startup-banner nil
    dotspacemacs-startup-lists '(projects bookmarks recents)
-   ;; List of themes, the first of the list is loaded when spacemacs starts.
-   ;; Press <SPC> T n to cycle to the next theme in the list (works great
-   ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(smyx
                          monokai
                          lush
@@ -130,8 +136,6 @@ values."
                                :powerline-scale 1.1)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
-   ;; The leader key accessible in `emacs state' and `insert state'
-   ;; (default "M-m")
    dotspacemacs-emacs-leader-key "M-m"
    ;; Major mode leader key is a shortcut key which is the equivalent of
    ;; pressing `<leader> m`. Set it to `nil` to disable it. (default ",")
@@ -145,9 +149,21 @@ values."
    ;; with `:' and Emacs commands are executed with `<leader> :'.
    dotspacemacs-command-key ":"
    dotspacemacs-remap-Y-to-y$ t
-   ;; Location where to auto-save files. Possible values are `original' to
-   ;; auto-save the file in-place, `cache' to auto-save the file to another
-   ;; file stored in the cache directory and `nil' to disable auto-saving.
+   ;; If non nil, inverse the meaning of `g' in `:substitute' Evil ex-command.
+   ;; (default nil)
+   dotspacemacs-ex-substitute-global nil
+   dotspacemacs-default-layout-name "Default"
+   ;; If non nil the default layout name is displayed in the mode-line.
+   ;; (default nil)
+   dotspacemacs-display-default-layout nil
+   ;; If non nil then the last auto saved layouts are resume automatically upon
+   ;; start. (default nil)
+   dotspacemacs-auto-resume-layouts t
+   ;; Size (in MB) above which spacemacs will prompt to open the large file
+   ;; literally to avoid performance issues. Opening a file literally means that
+   ;; no major mode or minor modes are active. (default is 1)
+   dotspacemacs-large-file-size 2
+   ;;Possible values are `original', `cache' or `nil' to disable auto-saving.
    ;; (default 'cache)
    dotspacemacs-auto-save-file-location 'cache
    ;; If non nil then `ido' replaces `helm' for some commands. For now only
@@ -156,11 +172,7 @@ values."
    dotspacemacs-use-ido nil
    ;; If non nil, `helm' will try to miminimize the space it uses. (default nil)
    dotspacemacs-helm-resize t
-   ;; if non nil, the helm header is hidden when there is only one source.
-   ;; (default nil)
    dotspacemacs-helm-no-header t
-   ;; define the position to display `helm', options are `bottom', `top',
-   ;; `left', or `right'. (default 'bottom)
    dotspacemacs-helm-position 'bottom
    ;; If non nil the paste micro-state is enabled. When enabled pressing `p`
    ;; several times cycle between the kill ring content. (default nil)
@@ -188,10 +200,18 @@ values."
    ;; the transparency level of a frame when it's inactive or deselected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
    dotspacemacs-inactive-transparency 90
+   ;; If non nil show the titles of transient states. (default t)
+   dotspacemacs-show-transient-state-title nil
+   ;; If non nil show the color guide hint for transient state keys. (default t)
+   dotspacemacs-show-transient-state-color-guide t
    ;; If non nil unicode symbols are displayed in the mode line. (default t)
    dotspacemacs-mode-line-unicode-symbols t
    dotspacemacs-smooth-scrolling t
    dotspacemacs-smartparens-strict-mode nil
+   ;; If non-nil pressing the closing parenthesis `)' key in insert mode passes
+   ;; over any automatically added closing parenthesis, bracket, quote, etc…
+   ;; This can be temporary disabled by pressing `C-q' before `)'. (default nil)
+   dotspacemacs-smart-closing-parenthesis t
    ;; Select a scope to highlight delimiters. Possible values are `any',
    ;; `current', `all' or `nil'. Default is `all' (highlight any scope and
    ;; emphasis the current one). (default 'all)
@@ -202,6 +222,12 @@ values."
    ;; specified with an installed package.
    ;; Not used for now. (default nil)
    dotspacemacs-default-package-repository nil
+   ;; Delete whitespace while saving buffer. Possible values are `all'
+   ;; to aggressively delete empty line and long sequences of whitespace,
+   ;; `trailing' to delete only the whitespace at end of lines, `changed'to
+   ;; delete only whitespace for changed lines or `nil' to disable cleanup.
+   ;; (default nil)
+   dotspacemacs-whitespace-cleanup nil
    ))
 
 (defun dotspacemacs/user-init ()
@@ -231,34 +257,58 @@ values."
   )
 
 (defun dotspacemacs/user-config ()
-  (helm-fuzzier-mode 1)
+  ;; (helm-fuzzier-mode 1)
   (golden-ratio-mode 1)
-  (setq golden-ratio-auto-scale t)
+  ;; (setq golden-ratio-auto-scale t)
   (add-hook 'ruby-mode-hook 'minitest-mode)
   (eval-after-load 'minitest
     '(minitest-install-snippets))
   (global-set-key (kbd "C-<return>") 'spacemacs/insert-line-below-no-indent)
   (global-set-key (kbd "C-S-<return>") 'spacemacs/insert-line-above-no-indent)
+
   (spacemacs/set-leader-keys
     "SPC" 'evil-avy-goto-word-or-subword-1)
+
   (diff-hl-flydiff-mode 1)
   (setq ruby-insert-encoding-magic-comment nil)
+
   (setq deft-directory "~/Dropbox/org/notes")
   (setq deft-use-filename-as-title nil)
+
   ;; Some additions for themes
   (setq theming-modifications
         '((smyx (company-tooltip-annotation-selection :inherit company-tooltip-selection))))
   (spacemacs/update-theme)
+
   ;; Evil Multicursor
   (add-hook 'prog-mode-hook 'turn-on-evil-mc-mode)
   (add-hook 'text-mode-hook 'turn-on-evil-mc-mode)
+
   ;; Sync with Google Calendar
   (setq org-icalendar-include-body t)
   (setq org-icalendar-store-UID t)
   (setq org-icalendar-use-deadline (quote (event-if-not-todo event-if-todo todo-due)))
   (setq org-icalendar-use-scheduled (quote (event-if-not-todo event-if-todo todo-start)))
   (setq org-icalendar-combined-agenda-file "~/Dropbox/Public/QMaEKjW2#2LG.ics")
+  ;; Ivy Counsel settings
+  (defun ivy-other-window ()
+    "Specific action to open in other window"
+    (interactive)
+    (execute-kbd-macro "\M-oj")
+    (other-window))
+  ;; Make fuzzy search by default (except buffer list)
+  (setq ivy-re-builders-alist
+        '((ivy-switch-buffer . ivy--regex-plus)
+          (t . ivy--regex-fuzzy)))
+  (spacemacs/set-leader-keys
+    ;; "pl" 'counsel-projectile
+    "pf" 'counsel-projectile-find-file
+    "pb" 'counsel-projectile-switch-to-buffer)
+  (define-key ivy-minibuffer-map (kbd "C-o") 'ivy-other-window)
+
+  (spacemacs/toggle-visual-line-navigation-on)
   )
+
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
 (custom-set-variables

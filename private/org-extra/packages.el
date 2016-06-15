@@ -17,8 +17,8 @@
 
 (defconst org-extra-packages
   '(org
-    org-agenda
-    org-projectile))
+    org-projectile
+    org-agenda))
 
 (when (configuration-layer/layer-usedp 'org)
   (defun org-extra/post-init-org ()
@@ -26,6 +26,7 @@
 
     (setq org-directory org-extra-org-folder)
     (setq org-default-notes-file "refile.org")
+    (setq org-agenda-files '("~/Dropbox/org/" "~/Dropbox/org/projects/"))
     (setq org-treat-S-cursor-todo-selection-as-state-change nil)
 
     (setq org-todo-keywords
@@ -52,15 +53,13 @@
     "Custom templates"
     ;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
     (setq org-capture-templates
-          (quote (("t" "todo" entry (file concat org-directory "refile.org")
-                   "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
-                  ("n" "note" entry (file concat org-directory "refile.org")
-                   "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
-                  ("j" "Journal" entry (file concat org-directory "refile.org")
-                   "* %?\n%U\n" :clock-in t :clock-resume t)
-                  ("m" "Meeting" entry (file concat org-directory "refile.org")
+          (quote (("t" "TODO" entry (file (concat org-directory "refile.org"))
+                   "* TODO %?\n%U\n%a\n" :clock-in nil :clock-resume nil)
+                  ("n" "Note" entry (file (concat org-directory "refile.org"))
+                   "* %? :NOTE:\n%U\n%a\n" :clock-in nil :clock-resume nil)
+                  ("m" "Meeting" entry (file (concat org-directory "refile.org"))
                    "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
-                  ("h" "Habit" entry (file concat org-directory "refile.org")
+                  ("h" "Habit" entry (file (concat org-directory "refile.org"))
                    "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n")))))
 
   (defun org-extra/refile-settings ()
@@ -74,13 +73,9 @@
     (setq org-outline-path-complete-in-steps nil)
     ;; Allow refile to create parent tasks with confirmation
     (setq org-refile-allow-creating-parent-nodes (quote confirm))
-    ;; Use IDO for both buffer and file completion and ido-everywhere to t
-    (setq org-completion-use-ido t)
-    ;; Use the current window when visiting files and buffers with ido
-    (setq ido-default-file-method 'selected-window)
-    (setq ido-default-buffer-method 'selected-window)
     ;; Use the current window for indirect buffer display
     (setq org-indirect-buffer-display 'current-window)
+    (setq org-refile-use-outline-path 'file)
     ;; Exclude DONE state tasks from refile targets
     (setq org-refile-target-verify-function 'org-extra/verify--refile-target))
 
@@ -90,7 +85,6 @@
 
   (defun org-extra/post-init-org-agenda ()
     "Extra settings for Agenda"
-    (setq org-agenda-files '("~/Dropbox/org"))
     ;; Do not dim blocked tasks
     (setq org-agenda-dim-blocked-tasks nil)
     ;; Compact the block agenda view
@@ -175,7 +169,6 @@
   "Org Projectile settings"
 
   (use-package org-projectile
-    :init
     :config
     (progn
       (setq org-projectile:projects-file
