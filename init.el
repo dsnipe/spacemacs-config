@@ -7,20 +7,8 @@
 You should not put any user code in this function besides modifying the variable
 values."
   (setq-default
-   ;; Base distribution to use. This is a layer contained in the directory
-   ;; `+distribution'. For now available distributions are `spacemacs-base'
-   ;; or `spacemacs'. (default 'spacemacs)
    dotspacemacs-distribution 'spacemacs
    dotspacemacs-configuration-layer-path '("~/.spacemacs.d/private")
-   ;; Lazy installation of layers (i.e. layers are installed only when a file
-   ;; with a supported type is opened). Possible values are `all', `unused'
-   ;; and `nil'. `unused' will lazy install only unused layers (i.e. layers
-   ;; not listed in variable `dotspacemacs-configuration-layers'), `all' will
-   ;; lazy install any layer that support lazy installation even the layers
-   ;; listed in `dotspacemacs-configuration-layers'. `nil' disable the lazy
-   ;; installation feature and you have to explicitly list a layer in the
-   ;; variable `dotspacemacs-configuration-layers' to install it.
-   ;; (default 'unused)
    dotspacemacs-enable-lazy-installation 'unused
    dotspacemacs-ask-for-lazy-installation t
    ;; List of configuration layers to load. If it is the symbol `all' instead
@@ -28,34 +16,35 @@ values."
    dotspacemacs-configuration-layers
    '(
      sql
-     ;; spacemacs-helm
-     ivy
+     helm
+     ;; ivy
      better-defaults
      osx
+     dash
      colors
      themes-megapack
      theming
+     spotify
      (ibuffer :variables
               ibuffer-group-buffers-by 'projects)
      imenu-list
+     gtags ;; gtags --gtagslabel=ctags or pygments (for elixir)
      (auto-completion :variables
                       auto-completion-tab-key-behavior 'complete
                       auto-completion-enable-snippets-in-popup t
                       auto-completion-enable-sort-by-usage t)
-     unimpaired
      emacs-lisp
      git
      (version-control :variables
                       version-control-diff-tool 'diff-hl)
      restclient
-     ;; semantic
      syntax-checking
      spacemacs-layouts
-     eyebrowse
      (org :variables
           org-enable-github-support t)
-     org-extra
+     ;; org-extra
      deft
+     github
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom
@@ -64,7 +53,8 @@ values."
              ranger-show-preview t)
      (spell-checking :variables spell-checking-enable-by-default nil)
      (ruby :variables
-           ruby-version-manager 'rbenv)
+           ruby-version-manager 'rbenv
+           ruby-test-runner 'rspec)
      yaml
      markdown
      ruby-on-rails
@@ -81,9 +71,9 @@ values."
      ;; helm-flx
      ;; helm-fuzzier
      minitest
-     dumb-jump
      org-projectile
      counsel-projectile
+     ace-mc
     )
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '(org-repo-todo)
@@ -112,24 +102,25 @@ values."
    ;; `official', `random' chooses a random text banner in `core/banners'
    dotspacemacs-startup-banner nil
    dotspacemacs-startup-lists '(projects bookmarks recents)
-   dotspacemacs-themes '(smyx
+   dotspacemacs-themes '(atom-one-dark
+                         spacemacs-light
+                         atom-dark
+                         seti
+                         colorsarenice-light
+                         smyx
                          monokai
                          lush
                          ample
                          flatland
-                         atom-dark
-                         atom-one-dark
                          spacegray
                          spacemacs-dark
-                         spacemacs-light
-                         solarized-light
                          monokai
                          zenburn)
    ;; If non nil the cursor color matches the state color.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
-   dotspacemacs-default-font '("Source Code Pro for Powerline"
+   dotspacemacs-default-font '("Source Code Pro"
                                :size 14
                                :weight normal
                                :width normal
@@ -143,10 +134,6 @@ values."
    ;; Major mode leader key accessible in `emacs state' and `insert state'.
    ;; (default "C-M-m)
    dotspacemacs-major-mode-emacs-leader-key "C-M-m"
-   ;; The command key used for Evil commands (ex-commands) and
-   ;; Emacs commands (M-x).
-   ;; By default the command key `:' so ex-commands are executed like in Vim
-   ;; with `:' and Emacs commands are executed with `<leader> :'.
    dotspacemacs-command-key ":"
    dotspacemacs-remap-Y-to-y$ t
    ;; If non nil, inverse the meaning of `g' in `:substitute' Evil ex-command.
@@ -158,13 +145,12 @@ values."
    dotspacemacs-display-default-layout nil
    ;; If non nil then the last auto saved layouts are resume automatically upon
    ;; start. (default nil)
-   dotspacemacs-auto-resume-layouts t
+   dotspacemacs-auto-resume-layouts nil
    ;; Size (in MB) above which spacemacs will prompt to open the large file
    ;; literally to avoid performance issues. Opening a file literally means that
    ;; no major mode or minor modes are active. (default is 1)
    dotspacemacs-large-file-size 2
    ;;Possible values are `original', `cache' or `nil' to disable auto-saving.
-   ;; (default 'cache)
    dotspacemacs-auto-save-file-location 'cache
    ;; If non nil then `ido' replaces `helm' for some commands. For now only
    ;; `find-files' (SPC f f), `find-spacemacs-file' (SPC f e s), and
@@ -185,20 +171,11 @@ values."
    ;; right; if there is insufficient space it displays it at the bottom.
    ;; (default 'bottom)
    dotspacemacs-which-key-position 'bottom
-   ;; If non nil a progress bar is displayed when spacemacs is loading. This
-   ;; may increase the boot time on some systems and emacs builds, set it to
-   ;; nil to boost the loading time. (default t)
    dotspacemacs-loading-progress-bar nil
    dotspacemacs-fullscreen-at-startup nil
    dotspacemacs-fullscreen-use-non-native nil
    dotspacemacs-maximized-at-startup t
-   ;; A value from the range (0..100), in increasing opacity, which describes
-   ;; the transparency level of a frame when it's active or selected.
-   ;; Transparency can be toggled through `toggle-transparency'. (default 90)
    dotspacemacs-active-transparency 50
-   ;; A value from the range (0..100), in increasing opacity, which describes
-   ;; the transparency level of a frame when it's inactive or deselected.
-   ;; Transparency can be toggled through `toggle-transparency'. (default 90)
    dotspacemacs-inactive-transparency 90
    ;; If non nil show the titles of transient states. (default t)
    dotspacemacs-show-transient-state-title nil
@@ -211,28 +188,30 @@ values."
    ;; If non-nil pressing the closing parenthesis `)' key in insert mode passes
    ;; over any automatically added closing parenthesis, bracket, quote, etc…
    ;; This can be temporary disabled by pressing `C-q' before `)'. (default nil)
-   dotspacemacs-smart-closing-parenthesis t
+   dotspacemacs-smart-closing-parenthesis nil
    ;; Select a scope to highlight delimiters. Possible values are `any',
    ;; `current', `all' or `nil'. Default is `all' (highlight any scope and
    ;; emphasis the current one). (default 'all)
    dotspacemacs-highlight-delimiters 'all
-   dotspacemacs-persistent-server nil
+   dotspacemacs-persistent-server t
    dotspacemacs-search-tools '("ag"  "ack" "grep")
-   ;; The default package repository used if no explicit repository has been
-   ;; specified with an installed package.
-   ;; Not used for now. (default nil)
    dotspacemacs-default-package-repository nil
    ;; Delete whitespace while saving buffer. Possible values are `all'
    ;; to aggressively delete empty line and long sequences of whitespace,
    ;; `trailing' to delete only the whitespace at end of lines, `changed'to
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
-   dotspacemacs-whitespace-cleanup nil
+   dotspacemacs-whitespace-cleanup 'changed
+   ;; If non-nil, `J' and `K' move lines up and down when in visual mode. Default value is `nil'.
+   dotspacemacs-visual-line-move-text t
+   ;; Allow choosing between different code folding methods. Currently supported are evil and origami.
+   ;; Default value is evil
+   dotspacemacs-folding-method 'origami
    ))
 
 (defun dotspacemacs/user-init ()
+  (setq ns-use-srgb-colorspace nil) ;; fixes bad colors in separator in the powerline
   (setq paradox-github-token "")
-  ;; (setq-default ruby-version-manager 'rbenv)
   (setq-default evil-escape-key-sequence "kj")
   ;; Frontend configs
   (setq-default
@@ -258,7 +237,7 @@ values."
 
 (defun dotspacemacs/user-config ()
   ;; (helm-fuzzier-mode 1)
-  (golden-ratio-mode 1)
+  ;; (golden-ratio-mode 1)
   ;; (setq golden-ratio-auto-scale t)
   (add-hook 'ruby-mode-hook 'minitest-mode)
   (eval-after-load 'minitest
@@ -273,39 +252,61 @@ values."
   (setq ruby-insert-encoding-magic-comment nil)
 
   (setq deft-directory "~/Dropbox/org/notes")
-  (setq deft-use-filename-as-title nil)
+  (setq deft-use-filename-as-title t)
+  (setq deft-use-filter-string-for-filename t)
+  (setq deft-auto-save-interval 0)
+  (spacemacs/set-leader-keys-for-major-mode 'deft-mode
+    "q" 'quit-window)
+  (defun deft-absolute-filename (slug &optional extension)
+    "Return an absolute filename to file named SLUG with optional EXTENSION.
+If EXTENSION is not given, `deft-extension' is assumed.
+If SLUG has spaces, replace them with underscores.
+Also force the file name to be all lower case."
+    (let* ((slug-no-space (replace-regexp-in-string
+                           "\\(.*?\\) *\\'" "\\1"
+                           slug)) ; remove trailing spaces if any
+           (slug-no-space (replace-regexp-in-string
+                           " " "_"
+                           slug-no-space)) ; replace spaces with _
+           (slug-no-space (downcase slug-no-space))) ; lower case
+      (concat (file-name-as-directory (expand-file-name deft-directory))
+              slug-no-space
+              "." (or extension deft-extension))))
 
   ;; Some additions for themes
   (setq theming-modifications
         '((smyx (company-tooltip-annotation-selection :inherit company-tooltip-selection))))
+  (setq theming-modifications
+        '((seti (company-tooltip-annotation-selection :inherit company-tooltip-selection)
+                (default ((t (:background "#20272e")))))))
+  (setq theming-modifications
+        '((atom-one-dark (trailing-whitespace :background "#6c6c6c"))))
   (spacemacs/update-theme)
 
   ;; Evil Multicursor
   (add-hook 'prog-mode-hook 'turn-on-evil-mc-mode)
   (add-hook 'text-mode-hook 'turn-on-evil-mc-mode)
 
-  ;; Sync with Google Calendar
-  (setq org-icalendar-include-body t)
-  (setq org-icalendar-store-UID t)
-  (setq org-icalendar-use-deadline (quote (event-if-not-todo event-if-todo todo-due)))
-  (setq org-icalendar-use-scheduled (quote (event-if-not-todo event-if-todo todo-start)))
-  (setq org-icalendar-combined-agenda-file "~/Dropbox/Public/QMaEKjW2#2LG.ics")
   ;; Ivy Counsel settings
-  (defun ivy-other-window ()
-    "Specific action to open in other window"
-    (interactive)
-    (execute-kbd-macro "\M-oj")
-    (other-window))
-  ;; Make fuzzy search by default (except buffer list)
-  (setq ivy-re-builders-alist
-        '((ivy-switch-buffer . ivy--regex-plus)
-          (t . ivy--regex-fuzzy)))
-  (spacemacs/set-leader-keys
-    ;; "pl" 'counsel-projectile
-    "pf" 'counsel-projectile-find-file
-    "pb" 'counsel-projectile-switch-to-buffer)
-  (define-key ivy-minibuffer-map (kbd "C-o") 'ivy-other-window)
+  ;; (defun ivy-other-window ()
+  ;;   "Specific action to open in other window"
+  ;;   (interactive)
+  ;;   (execute-kbd-macro "\M-oj")
+  ;;   (other-window))
+  ;; ;; Make fuzzy search by default (except buffer list)
+  ;; (setq ivy-re-builders-alist
+  ;;       '((ivy-switch-buffer . ivy--regex-plus)
+  ;;         (t . ivy--regex-fuzzy)))
+  ;; (spacemacs/set-leader-keys
+  ;;   ;; "pl" 'counsel-projectile
+  ;;   "pf" 'counsel-projectile-find-file
+  ;;   "pb" 'counsel-projectile-switch-to-buffer)
+  ;; (define-key ivy-minibuffer-map (kbd "C-o") 'ivy-other-window)
 
+  ;; My keybindings
+  (define-key evil-mode (kbd "C-,") 'ggtags-find-definition)
+
+  ;; TODO: Doesn't work actually, will need to find a solution
   (spacemacs/toggle-visual-line-navigation-on)
   )
 
@@ -321,6 +322,7 @@ values."
  '(custom-safe-themes
    (quote
     ("8288b9b453cdd2398339a9fd0cec94105bc5ca79b86695bd7bf0381b1fbe8147" default)))
+ '(evil-want-Y-yank-to-eol t)
  '(fci-rule-color "#151515" t)
  '(paradox-automatically-star t))
 (custom-set-faces
@@ -330,4 +332,5 @@ values."
  ;; If there is more than one, they won't work right.
  '(company-tooltip-annotation-selection ((t (:inherit company-tooltip-selection))))
  '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
- '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
+ '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil))))
+ '(trailing-whitespace ((t (:background "#6c6c6c")))))
