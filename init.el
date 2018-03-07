@@ -6,7 +6,7 @@
   "Configuration Layers declaration.
 You should not put any user code in this function besides modifying the variable
 values."
-  (setq-default
+(setq-default
    dotspacemacs-distribution 'spacemacs
    ;; dotspacemacs-configuration-layer-path '("~/.spacemacs.d/private")
    dotspacemacs-enable-lazy-installation 'unused
@@ -14,81 +14,76 @@ values."
    ;; List of configuration layers to load. If it is the symbol `all' instead
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
-   '(
-     vimscript
-     ;; clojure
-     ;; python
-     ;; java
-     ;; c-c++
-     terraform
-     sql
-     helm
-     ;; ivy
-     better-defaults
-     osx
-     dash
-     colors
-     themes-megapack
-     theming
-     spotify
-     (ibuffer :variables
-              ibuffer-group-buffers-by 'projects)
-     imenu-list
-     gtags ;; gtags --gtagslabel=ctags or pygments (for elixir)
-     (auto-completion :variables
-                      auto-completion-tab-key-behavior 'complete
-                      auto-completion-enable-snippets-in-popup t
-                      auto-completion-enable-sort-by-usage t)
-     emacs-lisp
-     git
-     (version-control :variables
-                      version-control-diff-tool 'diff-hl)
-     restclient
-     syntax-checking
-     spacemacs-layouts
-     (org :variables
-          org-enable-github-support t)
-     ;; org-extra
-     deft
-     github
-     (shell :variables
-            shell-default-height 30
-            shell-default-position 'bottom
-            shell-default-shell 'eshell)
-     (ranger :variables
-             ranger-show-preview t)
-     (spell-checking :variables spell-checking-enable-by-default nil)
-     (ruby :variables
-           ruby-version-manager 'chruby
-           ruby-test-runner 'rspec)
-     yaml
-     (markdown :variables markdown-live-preview-engine 'vmd)
-     ruby-on-rails
-     javascript
-     react
-     elixir
-     erlang
-     go
-     )
-   dotspacemacs-additional-packages
-   '(
-     ;; flx
-     ;; helm-flx
-     ;; helm-fuzzier
-     evil-multiedit
-     minitest
-     org-projectile
-     helm-ext
-     ;; counsel-projectile
-     ;; ace-mc
-    )
-   ;; A list of packages and/or extensions that will not be install and loaded.
-   dotspacemacs-excluded-packages '(org-repo-todo)
-   ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
-   ;; are declared in a layer which is not a member of
-   ;; the list `dotspacemacs-configuration-layers'. (default t)
-   dotspacemacs-delete-orphan-packages t))
-
+    '(csv
+      ;; clojure
+      ;; python
+      ;; java
+      ;; c-c++
+      treemacs
+      terraform
+      sql
+      helm
+      better-defaults
+      osx
+      dash
+      docker
+      colors
+      themes-megapack
+      theming
+      (ibuffer :variables
+               ibuffer-group-buffers-by 'projects)
+      imenu-list
+      gtags ;; gtags --gtagslabel=ctags or pygments (for elixir)
+      (auto-completion :variables
+                       auto-completion-tab-key-behavior 'complete
+                       auto-completion-enable-snippets-in-popup t
+                       auto-completion-enable-sort-by-usage t)
+      emacs-lisp
+      git
+      (version-control :variables
+                       version-control-diff-tool 'diff-hl)
+      restclient
+      syntax-checking
+      spacemacs-layouts
+      (org :variables
+           org-enable-github-support t)
+      ;; org-extra
+      deft
+      github
+      (shell :variables
+             shell-default-height 30
+             shell-default-position 'bottom
+             shell-default-shell 'eshell)
+      (ranger :variables
+              ranger-show-preview t)
+      (spell-checking :variables spell-checking-enable-by-default nil)
+      (ruby :variables
+            ruby-version-manager 'chruby
+            ruby-test-runner 'rspec)
+      yaml
+      (markdown :variables markdown-live-preview-engine 'vmd)
+      ruby-on-rails
+      javascript
+      react
+      elixir
+      erlang
+      )
+    dotspacemacs-additional-packages
+    '(
+      ;; flx
+      ;; helm-flx
+      ;; helm-fuzzier
+      evil-multiedit
+      minitest
+      company-childframe
+      ;; helm-ext
+      )
+    ;; A list of packages and/or extensions that will not be install and loaded.
+    dotspacemacs-excluded-packages '(org-repo-todo)
+    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
+    ;; are declared in a layer which is not a member of
+    ;; the list `dotspacemacs-configuration-layers'. (default t)
+    ))
 (defun dotspacemacs/init ()
   "Initialization function.
 This function is called at the very startup of Spacemacs initialization
@@ -235,6 +230,9 @@ values."
    ))
 
 (defun dotspacemacs/user-init ()
+  ;; (push '("melpa-stable" . "stable.melpa.org/packages/") configuration-layer-elpa-archives)
+  ;; (push '(use-package . "melpa-stable") package-pinned-packages)
+
   (setq ns-use-srgb-colorspace nil) ;; fixes bad colors in separator in the powerline
   (setq paradox-github-token "")
   (setq rspec-use-chruby t) ;; use ruby from chruby for RSpecs
@@ -264,6 +262,8 @@ values."
 (defun dotspacemacs/user-config ()
   (spacemacs/toggle-mode-line-minor-modes-off)
   (spacemacs/toggle-visual-line-navigation-on)
+  (display-time)
+  ;; (company-childframe-mode 1)
 
   (add-hook 'ruby-mode-hook 'minitest-mode)
 
@@ -276,10 +276,9 @@ values."
   (spacemacs/set-leader-keys
     "SPC" 'evil-avy-goto-word-or-subword-1)
 
-  (diff-hl-flydiff-mode 1)
   (setq ruby-insert-encoding-magic-comment nil)
 
-;;   ;; Deft settings
+  ;; Deft settings
   (setq deft-directory "~/Dropbox/org/notes")
   (setq deft-use-filename-as-title t)
   (setq deft-use-filter-string-for-filename t)
@@ -288,9 +287,9 @@ values."
     "q" 'quit-window)
   (defun deft-absolute-filename (slug &optional extension)
     "Return an absolute filename to file named SLUG with optional EXTENSION.
-If EXTENSION is not given, `deft-extension' is assumed.
-If SLUG has spaces, replace them with underscores.
-Also force the file name to be all lower case."
+    If EXTENSION is not given, `deft-extension' is assumed.
+    If SLUG has spaces, replace them with underscores.
+    Also force the file name to be all lower case."
     (let* ((slug-no-space (replace-regexp-in-string
                            "\\(.*?\\) *\\'" "\\1"
                            slug)) ; remove trailing spaces if any
@@ -302,25 +301,16 @@ Also force the file name to be all lower case."
               slug-no-space
               "." (or extension deft-extension))))
 
-  ;; Some additions for themes
-  (setq theming-modifications
-        '((smyx (company-tooltip-annotation-selection :inherit company-tooltip-selection))))
-  (setq theming-modifications
-        '((seti (company-tooltip-annotation-selection :inherit company-tooltip-selection)
-                (default ((t (:background "#20272e")))))))
-  (setq theming-modifications
-        '((atom-one-dark (trailing-whitespace :background "#6c6c6c"))))
-  (spacemacs/update-theme)
-
   ;; helm ext
-  (helm-ext-ff-enable-skipping-dots t)
-  (setq helm-ext-ff-skipping-dots-recenter t)
-  (helm-ext-ff-enable-zsh-path-expansion t)
-  (helm-ext-ff-enable-auto-path-expansion t)
-  (helm-ext-minibuffer-enable-header-line-maybe t)
+  ;; (helm-ext-ff-enable-skipping-dots t)
+  ;; (setq helm-ext-ff-skipping-dots-recenter t)
+  ;; (helm-ext-ff-enable-zsh-path-expansion t)
+  ;; (helm-ext-ff-enable-auto-path-expansion t)
+  ;; (helm-ext-minibuffer-enable-header-line-maybe t)
 
   ;; Markdown mode
   (setq markdown-open-command "/usr/local/bin/mark")
+
 
   ;; Highlights all matches of the selection in the buffer.
   (define-key evil-visual-state-map "R" 'evil-multiedit-match-all)
@@ -349,6 +339,21 @@ Also force the file name to be all lower case."
 
   ;; Ex command that allows you to invoke evil-multiedit with a regular expression, e.g.
   (evil-ex-define-cmd "ie[dit]" 'evil-multiedit-ex-match)
+
+  (defface spacemacs-multiedit-face
+    '((((class color) (min-colors 88) (background light))
+       :background "darkseagreen2")
+      (((class color) (min-colors 88) (background dark))
+       :background "darkolivegreen")
+      (((class color) (min-colors 16) (background light))
+       :background "darkseagreen2")
+      (((class color) (min-colors 16) (background dark))
+       :background "darkolivegreen")
+      (((class color) (min-colors 8))
+       :background "green" :foreground "black")
+      (t :inverse-video t))
+    "Basic face for highlighting."
+    :group 'basic-faces)
 
   ;; My keybindings
   ;; (define-key evil-mode (kbd "C-,") 'ggtags-find-definition)
@@ -400,7 +405,7 @@ This function is called at the very end of Spacemacs initialization."
  '(fci-rule-color "#151515" t)
  '(package-selected-packages
    (quote
-    (vmd-mode colorsarenice-theme org packed elixir-mode auto-complete simple-httpd pcache alert haml-mode powerline rake inflections spinner markdown-mode hydra autothemer bind-key tern company smartparens bind-map iedit highlight flycheck request helm helm-core projectile yasnippet skewer-mode js2-mode gh magit magit-popup git-commit with-editor inf-ruby dash pcre2el go-guru go-eldoc company-go go-mode evil-multiedit yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode company-anaconda anaconda-mode pythonic zonokai-theme zenburn-theme zen-and-art-theme yaml-mode xterm-color ws-butler window-numbering which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme tronesque-theme toxi-theme toc-org tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme sql-indent spotify spacemacs-theme spaceline spacegray-theme soothe-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode shell-pop seti-theme scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe reverse-theme reveal-in-osx-finder restclient restart-emacs rbenv ranger rainbow-mode rainbow-identifiers rainbow-delimiters railscasts-theme quelpa purple-haze-theme pug-mode projectile-rails professional-theme popwin planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pbcopy pastels-on-dark-theme paradox ox-gfm osx-trash osx-dictionary origami orgit organic-green-theme org-projectile org-present org-pomodoro org-plus-contrib org-download org-bullets open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme ob-http ob-elixir noctilux-theme niflheim-theme neotree naquadah-theme mwim mustang-theme multi-term move-text monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minitest minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow magit-gh-pulls macrostep lush-theme lorem-ipsum livid-mode linum-relative link-hint light-soap-theme less-css-mode launchctl json-mode js2-refactor js-doc jbeans-theme jazz-theme ir-black-theme inkpot-theme info+ indent-guide imenu-list ido-vertical-mode ibuffer-projectile hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt heroku-theme hemisu-theme help-fns+ helm-themes helm-swoop helm-spotify helm-projectile helm-mode-manager helm-make helm-gtags helm-gitignore helm-flx helm-descbinds helm-dash helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate golden-ratio gnuplot github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md ggtags gandalf-theme flyspell-correct-helm flycheck-pos-tip flycheck-mix flx-ido flatui-theme flatland-theme firebelly-theme fill-column-indicator feature-mode farmhouse-theme fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu espresso-theme eshell-z eshell-prompt-extras esh-help erlang emmet-mode elisp-slime-nav dumb-jump dracula-theme django-theme disaster diff-hl deft dash-at-point darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme counsel-projectile company-web company-tern company-statistics company-c-headers column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-identifiers-mode coffee-mode cmake-mode clues-theme clean-aindent-mode clang-format chruby cherry-blossom-theme busybee-theme bundler bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile atom-one-dark-theme atom-dark-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes alchemist aggressive-indent afternoon-theme adaptive-wrap ace-window ace-mc ace-link ace-jump-helm-line ac-ispell)))
+    (helm-xref company-terraform centered-cursor-mode font-lock+ colorsarenice-theme org packed elixir-mode auto-complete simple-httpd pcache alert haml-mode powerline rake inflections spinner markdown-mode hydra autothemer bind-key tern company smartparens bind-map iedit highlight flycheck request helm helm-core projectile yasnippet skewer-mode js2-mode gh magit magit-popup git-commit with-editor inf-ruby dash pcre2el go-guru go-eldoc company-go go-mode evil-multiedit yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode company-anaconda anaconda-mode pythonic zonokai-theme zenburn-theme zen-and-art-theme yaml-mode xterm-color ws-butler window-numbering which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme tronesque-theme toxi-theme toc-org tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme sql-indent spotify spacemacs-theme spaceline spacegray-theme soothe-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode shell-pop seti-theme scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe reverse-theme reveal-in-osx-finder restclient restart-emacs rbenv ranger rainbow-mode rainbow-identifiers rainbow-delimiters railscasts-theme quelpa purple-haze-theme pug-mode projectile-rails professional-theme popwin planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pbcopy pastels-on-dark-theme paradox ox-gfm osx-trash osx-dictionary origami orgit organic-green-theme org-projectile org-present org-pomodoro org-plus-contrib org-download org-bullets open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme ob-http ob-elixir noctilux-theme niflheim-theme neotree naquadah-theme mwim mustang-theme multi-term move-text monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minitest minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow magit-gh-pulls macrostep lush-theme lorem-ipsum livid-mode linum-relative link-hint light-soap-theme less-css-mode launchctl json-mode js2-refactor js-doc jbeans-theme jazz-theme ir-black-theme inkpot-theme info+ indent-guide imenu-list ido-vertical-mode ibuffer-projectile hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt heroku-theme hemisu-theme help-fns+ helm-themes helm-swoop helm-spotify helm-projectile helm-mode-manager helm-make helm-gtags helm-gitignore helm-flx helm-descbinds helm-dash helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate golden-ratio gnuplot github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md ggtags gandalf-theme flyspell-correct-helm flycheck-pos-tip flycheck-mix flx-ido flatui-theme flatland-theme firebelly-theme fill-column-indicator feature-mode farmhouse-theme fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu espresso-theme eshell-z eshell-prompt-extras esh-help erlang emmet-mode elisp-slime-nav dumb-jump dracula-theme django-theme disaster diff-hl deft dash-at-point darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme counsel-projectile company-web company-tern company-statistics company-c-headers column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-identifiers-mode coffee-mode cmake-mode clues-theme clean-aindent-mode clang-format chruby cherry-blossom-theme busybee-theme bundler bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile atom-one-dark-theme atom-dark-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes alchemist aggressive-indent afternoon-theme adaptive-wrap ace-window ace-mc ace-link ace-jump-helm-line ac-ispell)))
  '(paradox-automatically-star t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
