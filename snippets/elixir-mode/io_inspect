@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+#name : IO.inspect
+#key : ioi
+#contribu tor : Dmitry Tymchuk
+# --
+IO.inspect $1
