@@ -18,7 +18,6 @@ values."
      python
      csv
       ;; clojure
-      ;; python
       ;; java
       ;; c-c++
       treemacs
@@ -51,7 +50,6 @@ values."
       spacemacs-layouts
       (org :variables
            org-enable-github-support t)
-      ;; org-extra
       deft
       github
       (shell :variables
