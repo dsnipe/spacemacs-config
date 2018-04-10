@@ -308,6 +308,10 @@ values."
               slug-no-space
               "." (or extension deft-extension))))
 
+  ;; Insert |> in Elixir
+  (fset 'pipe
+        (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item '([124 62 32 tab] 0 "%d") arg)))
+  (global-set-key (kbd "<f4>") 'pipe)
   ;; helm ext
   ;; (helm-ext-ff-enable-skipping-dots t)
   ;; (setq helm-ext-ff-skipping-dots-recenter t)
