@@ -70,17 +70,14 @@ values."
       javascript
       react
       elixir
+      ;; (lsp :variables lsp-ui-doc-enable nil)
       erlang
       )
     dotspacemacs-additional-packages
     '(
-      ;; flx
-      ;; helm-flx
-      ;; helm-fuzzier
       magit-todos
       minitest
-      ;; company-childframe
-      ;; helm-ext
+      exunit
       )
     ;; A list of packages and/or extensions that will not be install and loaded.
     dotspacemacs-excluded-packages '(org-repo-todo)
@@ -119,96 +116,85 @@ values."
                          spacemacs-dark
                          monokai
                          zenburn)
-   ;; If non nil the cursor color matches the state color.
-   dotspacemacs-colorize-cursor-according-to-state t
-   ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
-   ;; size to make separators look not too crappy.
-   dotspacemacs-default-font '("Source Code Pro"
-                               :size 14
-                               :weight normal
-                               :width normal
-                               :powerline-scale 1.1)
-   ;; The leader key
-   dotspacemacs-leader-key "SPC"
-   dotspacemacs-emacs-leader-key "M-m"
-   ;; Major mode leader key is a shortcut key which is the equivalent of
-   ;; pressing `<leader> m`. Set it to `nil` to disable it. (default ",")
-   dotspacemacs-major-mode-leader-key ","
-   ;; Major mode leader key accessible in `emacs state' and `insert state'.
-   ;; (default "C-M-m)
-   dotspacemacs-major-mode-emacs-leader-key "C-M-m"
-   dotspacemacs-command-key ":"
-   dotspacemacs-remap-Y-to-y$ t
-   ;; If non nil, inverse the meaning of `g' in `:substitute' Evil ex-command.
-   ;; (default nil)
-   dotspacemacs-ex-substitute-global nil
-   dotspacemacs-default-layout-name "Default"
-   ;; If non nil the default layout name is displayed in the mode-line.
-   ;; (default nil)
-   dotspacemacs-display-default-layout nil
-   ;; If non nil then the last auto saved layouts are resume automatically upon
-   ;; ;; start. (default nil)
-   ;; dotspacemacs-auto-resume-layouts nil
-   ;; Size (in MB) above which spacemacs will prompt to open the large file
-   ;; literally to avoid performance issues. Opening a file literally means that
-   ;; no major mode or minor modes are active. (default is 1)
-   dotspacemacs-large-file-size 2
-   ;;Possible values are `original', `cache' or `nil' to disable auto-saving.
-   dotspacemacs-auto-save-file-location 'cache
-   ;; If non nil then `ido' replaces `helm' for some commands. For now only
-   ;; `find-files' (SPC f f), `find-spacemacs-file' (SPC f e s), and
-   ;; `find-contrib-file' (SPC f e c) are replaced. (default nil)
-   dotspacemacs-helm-resize t
-   dotspacemacs-helm-no-header t
-   dotspacemacs-helm-position 'bottom
-   ;; If non nil the paste micro-state is enabled. When enabled pressing `p`
-   ;; several times cycle between the kill ring content. (default nil)
-   dotspacemacs-enable-paste-micro-state t
-   ;; Which-key delay in seconds. The which-key buffer is the popup listing
-   ;; the commands bound to the current keystroke sequence. (default 0.4)
-   dotspacemacs-which-key-delay 0.4
-   ;; Which-key frame position. Possible values are `right', `bottom' and
-   ;; `right-then-bottom'. right-then-bottom tries to display the frame to the
-   ;; right; if there is insufficient space it displays it at the bottom.
-   ;; (default 'bottom)
-   dotspacemacs-which-key-position 'bottom
-   dotspacemacs-switch-to-buffer-prefers-purpose nil
-   dotspacemacs-loading-progress-bar nil
-   dotspacemacs-fullscreen-at-startup nil
-   dotspacemacs-fullscreen-use-non-native nil
-   dotspacemacs-maximized-at-startup t
-   dotspacemacs-active-transparency 50
-   dotspacemacs-inactive-transparency 90
-   ;; If non nil show the titles of transient states. (default t)
-   dotspacemacs-show-transient-state-title nil
-   ;; If non nil show the color guide hint for transient state keys. (default t)
-   dotspacemacs-show-transient-state-color-guide t
-   ;; If non nil unicode symbols are displayed in the mode line. (default t)
-   dotspacemacs-mode-line-unicode-symbols nil
-   dotspacemacs-smooth-scrolling t
-   dotspacemacs-smartparens-strict-mode nil
-   ;; Control line numbers activation.
-   ;; If set to `t' or `relative' line numbers are turned on in all `prog-mode' and
-   ;; `text-mode' derivatives. If set to `relative', line numbers are relative.
-   ;; This variable can also be set to a property list for finer control:
-   ;; '(:relative nil
-   ;;   :disabled-for-modes dired-mode
-   ;;                       doc-view-mode
-   ;;                       markdown-mode
-   ;;                       org-mode
-   ;;                       pdf-view-mode
-   ;;                       text-mode
-   ;;   :size-limit-kb 1000)
-   ;; (default nil)
-   dotspacemacs-line-numbers '(:relative t
-                               :disabled-for-modes dired-mode
-                                                   doc-view-mode
-                                                   markdown-mode
-                                                   org-mode
-                                                   pdf-view-mode
-                                                   text-mode
-
-                                                   :size-limit-kb 1000)
+    ;; If non nil the cursor color matches the state color.
+    dotspacemacs-colorize-cursor-according-to-state t
+    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
+    ;; size to make separators look not too crappy.
+    dotspacemacs-default-font '("Source Code Pro"
+                                :size 14
+                                :weight normal
+                                :width normal
+                                :powerline-scale 1.1)
+    ;; The leader key
+    dotspacemacs-leader-key "SPC"
+    dotspacemacs-emacs-leader-key "M-m"
+    ;; Major mode leader key is a shortcut key which is the equivalent of
+    ;; pressing `<leader> m`. Set it to `nil` to disable it. (default ",")
+    dotspacemacs-major-mode-leader-key ","
+    ;; Major mode leader key accessible in `emacs state' and `insert state'.
+    ;; (default "C-M-m)
+    dotspacemacs-major-mode-emacs-leader-key "C-M-m"
+    dotspacemacs-command-key ":"
+    dotspacemacs-remap-Y-to-y$ t
+    ;; If non nil, inverse the meaning of `g' in `:substitute' Evil ex-command.
+    ;; (default nil)
+    dotspacemacs-ex-substitute-global nil
+    dotspacemacs-default-layout-name "Default"
+    ;; If non nil the default layout name is displayed in the mode-line.
+    ;; (default nil)
+    dotspacemacs-display-default-layout nil
+    ;; If non nil then the last auto saved layouts are resume automatically upon
+    ;; ;; start. (default nil)
+    ;; dotspacemacs-auto-resume-layouts nil
+    ;; Size (in MB) above which spacemacs will prompt to open the large file
+    ;; literally to avoid performance issues. Opening a file literally means that
+    ;; no major mode or minor modes are active. (default is 1)
+    dotspacemacs-large-file-size 2
+    ;;Possible values are `original', `cache' or `nil' to disable auto-saving.
+    dotspacemacs-auto-save-file-location 'cache
+    ;; If non nil then `ido' replaces `helm' for some commands. For now only
+    ;; `find-files' (SPC f f), `find-spacemacs-file' (SPC f e s), and
+    ;; `find-contrib-file' (SPC f e c) are replaced. (default nil)
+    dotspacemacs-helm-resize t
+    dotspacemacs-helm-no-header t
+    dotspacemacs-helm-position 'bottom
+    ;; If non nil the paste micro-state is enabled. When enabled pressing `p`
+    ;; several times cycle between the kill ring content. (default nil)
+    dotspacemacs-enable-paste-micro-state t
+    ;; Which-key delay in seconds. The which-key buffer is the popup listing
+    ;; the commands bound to the current keystroke sequence. (default 0.4)
+    dotspacemacs-which-key-delay 0.4
+    ;; Which-key frame position. Possible values are `right', `bottom' and
+    ;; `right-then-bottom'. right-then-bottom tries to display the frame to the
+    ;; right; if there is insufficient space it displays it at the bottom.
+    ;; (default 'bottom)
+    dotspacemacs-which-key-position 'bottom
+    dotspacemacs-switch-to-buffer-prefers-purpose nil
+    dotspacemacs-loading-progress-bar nil
+    dotspacemacs-fullscreen-at-startup nil
+    dotspacemacs-fullscreen-use-non-native nil
+    dotspacemacs-maximized-at-startup t
+    dotspacemacs-active-transparency 50
+    dotspacemacs-inactive-transparency 90
+    ;; If non nil show the titles of transient states. (default t)
+    dotspacemacs-show-transient-state-title nil
+    ;; If non nil show the color guide hint for transient state keys. (default t)
+    dotspacemacs-show-transient-state-color-guide t
+    ;; If non nil unicode symbols are displayed in the mode line. (default t)
+    dotspacemacs-mode-line-unicode-symbols t
+    dotspacemacs-smooth-scrolling t
+    dotspacemacs-smartparens-strict-mode nil
+    ;; Control line numbers activation.
+    ;; If set to `t' or `relative' line numbers are turned on in all `prog-mode' and
+    ;; `text-mode' derivatives. If set to `relative', line numbers are relative.
+    dotspacemacs-line-numbers '(:relative t
+                                :disabled-for-modes dired-mode
+                                                    doc-view-mode
+                                                    markdown-mode
+                                                    org-mode
+                                                    pdf-view-mode
+                                                    text-mode
+                                                    :size-limit-kb 1000)
    ;; If non-nil pressing the closing parenthesis `)' key in insert mode passes
    ;; over any automatically added closing parenthesis, bracket, quote, etc…
    ;; This can be temporary disabled by pressing `C-q' before `)'. (default nil)
@@ -234,10 +220,11 @@ values."
    ))
 
 (defun dotspacemacs/user-init ()
-  (setq ns-use-srgb-colorspace nil) ;; fixes bad colors in separator in the powerline
   (setq paradox-github-token "")
-  (setq rspec-use-chruby t) ;; use ruby from chruby for RSpecs
   (setq-default evil-escape-key-sequence "kj")
+
+  (setq recentf-save-file (format "%s.%s" recentf-save-file server-name))
+
   ;; Frontend configs
   (setq-default
    js2-basic-offset 2
@@ -260,14 +247,34 @@ values."
   )
 
 (defun dotspacemacs/user-config ()
-  ;; (exec-path-from-shell-initialize)
-  ;; (exec-path-from-shell-copy-env "KIEX_HOME")
-  ;; (exec-path-from-shell-copy-env "MIX_ARCHIVES")
+  ;; Make dark title bar
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+  (add-to-list 'default-frame-alist '(ns-appearance . dark))
+
+  ;; Fix bottom bar color problem
+  (setq powerline-default-separator 'utf-8)
 
   (spacemacs/toggle-mode-line-minor-modes-off)
   (spacemacs/toggle-visual-line-navigation-on)
   (display-time)
-  ;; (company-childframe-mode t)
+
+  ;; (use-package lsp-mode
+  ;;   :commands lsp
+  ;;   :ensure t
+  ;;   :diminish lsp-mode
+  ;;   :hook
+  ;;   (elixir-mode . lsp)
+  ;;   :init
+  ;;   (add-to-list 'exec-path "/Users/dmitry/Code/elixir-ls/release"))
+
+  (with-eval-after-load 'elixir-mode
+    (spacemacs/declare-prefix-for-mode 'elixir-mode
+      "mt" "tests" "testing related functionality")
+    (spacemacs/set-leader-keys-for-major-mode 'elixir-mode
+      "ta" 'exunit-verify-all
+      "tb" 'exunit-verify
+      "tr" 'exunit-rerun
+      "tt" 'exunit-verify-single))
 
   (add-hook 'ruby-mode-hook 'minitest-mode)
 
@@ -309,12 +316,6 @@ values."
   (global-set-key (kbd "<f4>") 'pipe)
 
   (setq projectile-enable-caching t)
-  ;; helm ext
-  ;; (helm-ext-ff-enable-skipping-dots t)
-  ;; (setq helm-ext-ff-skipping-dots-recenter t)
-  ;; (helm-ext-ff-enable-zsh-path-expansion t)
-  ;; (helm-ext-ff-enable-auto-path-expansion t)
-  ;; (helm-ext-minibuffer-enable-header-line-maybe t)
 
   ;; Markdown mode
   (setq markdown-open-command "/usr/local/bin/mark")
