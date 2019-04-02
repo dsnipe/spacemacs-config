@@ -223,7 +223,7 @@ values."
   (setq paradox-github-token "")
   (setq-default evil-escape-key-sequence "kj")
 
-  (setq recentf-save-file (format "%s.%s" recentf-save-file server-name))
+  ;; (setq recentf-save-file (format "%s.%s" recentf-save-file server-name))
 
   ;; Frontend configs
   (setq-default
